@@ -1,4 +1,4 @@
-module lint
+module github.com/Headcrab/unusedintf
 
 go 1.24.2
 

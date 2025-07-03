@@ -3,9 +3,8 @@
   "tasks": [
     {
       "label": "Lint: Standard (golangci-lint)",
-      "type": "shell",
       "command": "golangci-lint",
-      "args": ["run", "."],
+      "args": ["run", "./..."],
       "group": {
         "kind": "build",
         "isDefault": false
@@ -22,7 +21,6 @@
     },
     {
       "label": "Lint: Unused Interfaces",
-      "type": "shell",
       "command": "./unusedintf.exe",
       "args": ["./..."],
       "group": {
@@ -48,11 +46,13 @@
           "message": 4
         }
       },
-      "dependsOn": "Build: unusedintf"
+      "dependsOn": "Build: unusedintf",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
     },
     {
       "label": "Build: unusedintf",
-      "type": "shell",
       "command": "go",
       "args": ["build", "-o", "unusedintf.exe", "."],
       "group": "build",
@@ -61,7 +61,8 @@
         "reveal": "silent",
         "focus": false,
         "panel": "shared"
-      }
+      },
+      "problemMatcher": []
     },
     {
       "label": "Lint: All",

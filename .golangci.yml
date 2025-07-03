@@ -1,9 +1,38 @@
+version: "2"
+
 linters:
   enable:
-    - govet
-    - staticcheck
-    - unused
-    - ineffassign
+    - sloglint
+  # disable:  # Можно отключить ненужные линтеры.
+  #   - govet
 
-run:
-  timeout: 10m
+# Настройки для отдельных линтеров (необязательно).
+linters-settings:
+  sloglint:
+    # Не смешивать пары ключ-значение и атрибуты.
+    # Default: true
+    no-mixed-args: false
+    # Использовать только пары ключ-значение (переопределяет no-mixed-args, несовместимо с attr-only).
+    # Default: false
+    kv-only: true
+    # Использовать только атрибуты (переопределяет no-mixed-args, несовместимо с kv-only).
+    # Default: false
+    attr-only: false
+    # Использовать методы, принимающие контекст.
+    # Default: false
+    context: scope
+    # Использовать статические значения для сообщений.
+    # Default: false
+    static-msg: true
+    # Использовать константы вместо "сырых" ключей.
+    # Default: false
+    no-raw-keys: true
+    # Единый стиль именования ключей: snake, kebab, camel, pascal.
+    # Default: ""
+    key-naming-case: snake
+    # Размещать аргументы на отдельных строках.
+    # Default: false
+    args-on-sep-lines: true
+# run:  # Настройки запуска (необязательно).
+#   timeout: 5m
+#   issues-exit-code: 1

@@ -109,7 +109,7 @@ type Service struct {
 }
 
 func (s *Service) Work() {
-	s.regular.DoSomething() // Этот метод используется
+	_ = s.regular.DoSomething() // Этот метод используется
 	// GetResult() НЕ используется
 }
 
@@ -122,7 +122,7 @@ func (us *UserService) GetUser(id string) (*User, error) {
 	}
 
 	// Вызов на Repository[User]
-	us.repo.Get(id)
+	_, _ = us.repo.Get(id)
 
 	return &user, nil
 }
@@ -140,7 +140,7 @@ func (ps *PostService) ListPosts() ([]Post, error) {
 	}
 
 	// Вызов на Repository[Post]
-	ps.repo.List()
+	_, _ = ps.repo.List()
 
 	return posts, nil
 }

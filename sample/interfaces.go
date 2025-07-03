@@ -274,61 +274,60 @@ func (p *DirectProcessorImpl) ProcessDirect(data string) error {
 // DoComplexWork использует различные методы интерфейсов
 func (cs *ComplexService) DoComplexWork() {
 	// 1. Использование встроенных интерфейсов
-	cs.Writer.CustomWrite()
+	_ = cs.Writer.CustomWrite()
 
 	// 2. Использование интерфейса с контекстом
 	ctx := context.Background()
-	cs.Service.ProcessWithContext(ctx, "data")
+	_ = cs.Service.ProcessWithContext(ctx, "data")
 
 	// 3. Использование интерфейса с вариативными параметрами
-	cs.Logger.Log("info", "message", "details")
+	_ = cs.Logger.Log("info", "message", "details")
 
 	// 4. Использование интерфейса с функциональными типами
-	cs.Handler.OnEvent(func(s string) error { return nil })
+	_ = cs.Handler.OnEvent(func(s string) error { return nil })
 
 	// 5. Использование интерфейса с каналами
 	ch := make(chan string)
-	cs.Processor.SendData(ch)
+	_ = cs.Processor.SendData(ch)
 
 	// 6. Использование интерфейса с мапами и слайсами
-	cs.Data.ProcessMap(map[string]interface{}{"key": "value"})
+	_ = cs.Data.ProcessMap(map[string]interface{}{"key": "value"})
 
 	// 7. Использование интерфейса с указателями
 	str := "test"
-	cs.Pointer.HandlePointer(&str)
+	_ = cs.Pointer.HandlePointer(&str)
 
 	// 8. Прямой вызов метода на структуре (для тестирования различий между вызовами)
 	s := &TestPointerStruct{}
-	s.HandlePointer(&str)
+	_ = s.HandlePointer(&str)
 
 	// 9. Использование интерфейса с именованными возвращаемыми значениями
-	cs.Named.GetNamedResult()
+	_, _ = cs.Named.GetNamedResult()
 
 	// 10. Использование интерфейса с одинаковыми именами методов
-	cs.ProcessorV1.Process("data")
+	_ = cs.ProcessorV1.Process("data")
 
 	// 11. Использование интерфейса с методами без параметров
 	cs.Actions.Start()
-	cs.Actions.GetStatus()
+	_ = cs.Actions.GetStatus()
 
 	// 12. Использование интерфейса с интерфейсными параметрами
-	cs.Params.HandleReader(cs.Reader)
+	_ = cs.Params.HandleReader(cs.Reader)
 
 	// 13. Использование расширенного интерфейса
-	cs.Advanced.HandleString("test")
-	cs.Advanced.HandlePointer(&str)
-	cs.Advanced.HandleSlice([]string{"test"})
-	cs.Advanced.HandleMap(map[string]int{"key": 42})
-	cs.Advanced.HandleChannel(ch)
-	cs.Advanced.HandleFunc(func(s string) error { return nil })
-	cs.Advanced.HandleInterface(cs.Reader)
-	cs.Advanced.HandleContext(ctx)
-	cs.Advanced.HandleVariadic("test1", "test2")
-	cs.Advanced.GetResult()
-	cs.Advanced.GetMultiple()
+	_ = cs.Advanced.HandleString("test")
+	_ = cs.Advanced.HandlePointer(&str)
+	_ = cs.Advanced.HandleSlice([]string{"test"})
+	_ = cs.Advanced.HandleChannel(ch)
+	_ = cs.Advanced.HandleFunc(func(s string) error { return nil })
+	_ = cs.Advanced.HandleInterface(cs.Reader)
+	_ = cs.Advanced.HandleContext(ctx)
+	_ = cs.Advanced.HandleVariadic("test1", "test2")
+	_ = cs.Advanced.GetResult()
+	_, _, _ = cs.Advanced.GetMultiple()
 
 	// Прямая реализация интерфейса
-	cs.Direct.ProcessDirect("test")
+	_ = cs.Direct.ProcessDirect("test")
 }
 
 // ===============================
@@ -340,7 +339,7 @@ func (cs *ComplexService) TypeAssertions() {
 	var iface interface{} = cs.Reader
 
 	if r, ok := iface.(Reader); ok {
-		r.CustomRead() // CustomRead используется через type assertion
+		_ = r.CustomRead() // CustomRead используется через type assertion
 	}
 
 	if adv, ok := interface{}(cs.Advanced).(AdvancedInterface); ok { //nolint:staticcheck // намеренно для тестов
@@ -365,9 +364,9 @@ func (cs *ComplexService) MethodValues() {
 	debugFunc := cs.Logger.Debug
 
 	// Используем их
-	arrayHandler([5]int{1, 2, 3, 4, 5})            // HandleArray используется как значение
-	mapHandler(map[string][]int{"key": {1, 2, 3}}) // HandleComplexMap используется как значение
-	debugFunc("test message")                      // Debug используется как значение функции
+	_ = arrayHandler([5]int{1, 2, 3, 4, 5})            // HandleArray используется как значение
+	_ = mapHandler(map[string][]int{"key": {1, 2, 3}}) // HandleComplexMap используется как значение
+	debugFunc("test message")                          // Debug используется как значение функции
 }
 
 // Кейс 20: Использование в switch/type switch
@@ -375,11 +374,11 @@ func (cs *ComplexService) SwitchUsage(value interface{}) {
 	switch v := value.(type) {
 	case AdvancedInterface:
 		// Эти методы используются в type switch
-		v.HandleReadChannel(make(<-chan string))                                  // HandleReadChannel используется
-		v.HandleWriteChannel(make(chan<- string))                                 // HandleWriteChannel используется
-		v.HandleComplexFunc(func(int, string) (bool, error) { return true, nil }) // HandleComplexFunc используется
+		_ = v.HandleReadChannel(make(<-chan string))                                  // HandleReadChannel используется
+		_ = v.HandleWriteChannel(make(chan<- string))                                 // HandleWriteChannel используется
+		_ = v.HandleComplexFunc(func(int, string) (bool, error) { return true, nil }) // HandleComplexFunc используется
 	case ServiceWithContext:
-		v.CancelOperation(context.Background()) // CancelOperation используется в type switch
+		_ = v.CancelOperation(context.Background()) // CancelOperation используется в type switch
 	}
 }
 
@@ -389,7 +388,7 @@ func (cs *ComplexService) DeferUsage() {
 	defer cs.Actions.Reset()            // Reset используется в defer
 
 	defer func() {
-		cs.Advanced.HandleMixedVariadic("prefix", 1, 2, 3) // HandleMixedVariadic используется в defer
+		_ = cs.Advanced.HandleMixedVariadic("prefix", 1, 2, 3) // HandleMixedVariadic используется в defer
 	}()
 }
 
@@ -397,7 +396,7 @@ func (cs *ComplexService) DeferUsage() {
 func (cs *ComplexService) ReflectionUsage() {
 	// Сложный случай: метод вызывается через рефлексию
 	// Наш линтер может не поймать такое использование
-	var handlers []interface{} = []interface{}{
+	handlers := []any{
 		cs.Actions.Reset,  // Reset используется через рефлексию
 		cs.Advanced.Clear, // Clear используется через рефлексию
 	}
@@ -406,28 +405,28 @@ func (cs *ComplexService) ReflectionUsage() {
 	// Использование методов через interface{}
 	var anyReader interface{} = cs.Reader
 	if reader, ok := anyReader.(io.Reader); ok {
-		reader.Read(make([]byte, 10)) // Read используется через interface{}
+		_, _ = reader.Read(make([]byte, 10)) // Read используется через interface{}
 	}
 	if reader, ok := anyReader.(Reader); ok {
-		reader.CustomRead() // CustomRead используется через interface{}
+		_ = reader.CustomRead() // CustomRead используется через interface{}
 	}
 
 	// Использование методов с interface{} параметрами
 	var processor interface{} = cs.ProcessorV1
 	if p, ok := processor.(AnyProcessor); ok {
-		p.Process("data") // Process используется через interface{}
+		_ = p.Process("data") //nolint:errcheck // Process используется через interface{}
 	}
 
 	// Использование методов через интерфейсные переменные
 	var sp StringProcessor = cs.ProcessorV1
 	var sc StringConsumer = sp // присваиваем переменной типа StringConsumer
-	sc.Process("data")         // Process используется через интерфейсную переменную
+	_ = sc.Process("data")     //nolint:errcheck // Process используется через интерфейсную переменную
 
 	// Использование методов через интерфейсные переменные с разными сигнатурами
 	impl := &ProcessorImpl{}
 	var base BaseProcessor = impl
 	var extended ExtendedProcessor = impl
-	base.Process()     // Process используется через базовый интерфейс
-	extended.Process() // Process используется через расширенный интерфейс
-	extended.Extra()   // Extra используется только через расширенный интерфейс
+	_ = base.Process()     //nolint:errcheck // Process используется через базовый интерфейс
+	_ = extended.Process() //nolint:errcheck // Process используется через расширенный интерфейс
+	_ = extended.Extra()   //nolint:errcheck // Extra используется только через расширенный интерфейс
 }

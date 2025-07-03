@@ -111,10 +111,10 @@ func (ds *DataSource) ReadSource() string { return "source data" }
 func UseMoreInterfaces() {
 	// Кейс 23: Вложенные интерфейсы
 	var closer io.Closer = &File{}
-	closer.Close() // Использует BaseIO.Close
+	_ = closer.Close() //nolint:errcheck // Использует BaseIO.Close
 
 	var reader io.Reader = &File{}
-	reader.Read(nil) // Использует BaseIO.Read
+	_, _ = reader.Read(nil) //nolint:errcheck // Использует BaseIO.Read
 
 	// Кейс 24: Использование Stringer через fmt
 	dataItem := DataItem{}
@@ -132,5 +132,5 @@ func UseMoreInterfaces() {
 	// Кейс 27: Присваивание интерфейсов
 	var src Source = &DataSource{}
 	var dst Destination = src // Присваивание, которое делает метод используемым для обоих
-	dst.ReadSource()
+	_ = dst.ReadSource()
 }
